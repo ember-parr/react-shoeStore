@@ -58,6 +58,8 @@ export default function App() {
     );
   }
 
+  const filteredProducts = size ? products.filter(product => product.skus.find((shoe) => shoe.size === parseInt(size)) ) : products;
+
   return (
     <>
       <div className="content">
@@ -71,9 +73,11 @@ export default function App() {
               <option value="8">8</option>
               <option value="9">9</option>
             </select>
+            {/* && works like an if operator here, if left is true, right is rendered */}
+            { size && <h2>Found {filteredProducts.length} products </h2>} 
           </section>
           <section id="products">
-            {products.map(renderProduct)}
+            {filteredProducts.map(renderProduct)}
           </section>
         </main>
       </div>
