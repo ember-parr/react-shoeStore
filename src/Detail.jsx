@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "./services/useFetch";
 import PageNotFound from "./PageNotFound"
 
-export default function Detail() {
+export default function Detail(props) {
     const [sku, setSku] = useState("");
     const { id } = useParams()
     const { data: product, loading, error } = useFetch(`products/${id}`)
@@ -30,7 +30,15 @@ export default function Detail() {
                   </option>
               ))}
             </select>
-        <p><button className="btn btn-primary" disabled={!sku} onClick={() => navigate('/cart') }>Add To Cart</button></p>
+        <p>
+            <button className="btn btn-primary" 
+                disabled={!sku} 
+                onClick={() => {
+                    props.addToCart(id, sku)
+                    navigate('/cart') 
+                }}
+            >
+                    Add To Cart</button></p>
         <img src={`/images/${product.image}`} alt={product.category} />
         </div>
     );
