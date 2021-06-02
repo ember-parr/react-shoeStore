@@ -2,50 +2,25 @@ import React, { useState } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
-
-// we'll get product data with an api later
-const products = [
-  {
-    "id": 1,
-    "category": "shoes",
-    "image": "shoe1.jpg",
-    "name": "Hiker",
-    "price": 94.95,
-    "skus": [
-      { "sku": "17", "size": 7 },
-      { "sku": "18", "size": 8 }
-    ],
-    "description": "This rugged boot will get you up the mountain safely."
-  },
-  {
-    "id": 2,
-    "category": "shoes",
-    "image": "shoe2.jpg",
-    "name": "Climber",
-    "price": 78.99,
-    "skus": [
-      { "sku": "28", "size": 8 },
-      { "sku": "29", "size": 9 }
-    ],
-    "description": "Sure-footed traction in slippery conditions."
-  },
-  {
-    "id": 3,
-    "category": "shoes",
-    "image": "shoe3.jpg",
-    "name": "Explorer",
-    "price": 145.95,
-    "skus": [
-      { "sku": "37", "size": 7 },
-      { "sku": "38", "size": 8 },
-      { "sku": "39", "size": 9 }
-    ],
-    "description": "Look stylish while stomping in the mud."
-  }
-]
+import Spinner from "./Spinner";
+import useFetch from "./services/useFetch";
 
 export default function App() {
-  const [size, setSize] = useState("") // useState returns an array of 2 items so starting with array destructuring makes sense. default value in () 
+  const [size, setSize] = useState("")
+  
+  // aliasing data as products because products is variable expected below in return
+  const { data: products, loading, error } = useFetch("products?category=shoes")
+  
+  // no longer need, custom hook placed in useFetch.js
+  // useEffect(() => {  
+  //   getProducts("shoes")
+  //   .then((response)=> {
+  //     setProducts(response)
+  //   }).catch((e) => setError(e))
+  //   .finally(() => isLoading(false))
+  // }, [])
+
+
   function renderProduct(p) {
     return (
       <div key={p.id} className="product">
@@ -58,6 +33,11 @@ export default function App() {
     );
   }
 
+  const filteredProducts = size ? products.filter(product => product.skus.find((shoe) => shoe.size === parseInt(size)) ) : products;
+
+  if (error) throw error;
+  if (loading) return <Spinner />
+
   return (
     <>
       <div className="content">
@@ -65,15 +45,17 @@ export default function App() {
         <main>
           <section id="filters">
             <label htmlFor="size">Filter by Size:</label>{" "}
-            <select id="size">
+            <select id="size" value={size} onChange={(e) => setSize(e.target.value)}>
               <option value="">All sizes</option>
               <option value="7">7</option>
               <option value="8">8</option>
               <option value="9">9</option>
             </select>
+            {/* && works like an if operator here, if left is true, right is rendered */}
+            { size && <h2>Found {filteredProducts.length} products </h2>} 
           </section>
           <section id="products">
-            {products.map(renderProduct)}
+            {filteredProducts.map(renderProduct)}
           </section>
         </main>
       </div>
