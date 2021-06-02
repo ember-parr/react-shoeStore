@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Spinner from "./Spinner";
 import useFetch from "./services/useFetch";
 import { useParams } from "react-router-dom"
+import PageNotFound from "./PageNotFound"
 
 export default function Products() {
   const [size, setSize] = useState("")
@@ -34,9 +35,12 @@ export default function Products() {
 
   const filteredProducts = size ? products.filter(product => product.skus.find((shoe) => shoe.size === parseInt(size)) ) : products;
 
+  // start of guard clauses (checking for correct information)
   if (error) throw error;
   if (loading) return <Spinner />
-
+  if (products.length === 0) return <PageNotFound />
+  // end of guard clauses 
+  
   return (
     <>
       
