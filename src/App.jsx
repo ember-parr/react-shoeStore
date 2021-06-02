@@ -8,6 +8,7 @@ export default function App() {
   const [size, setSize] = useState("")
   const [products, setProducts] = useState([])
   const [error, setError] = useState(null)
+  const [loading, isLoading] = useState(true)
   
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export default function App() {
     .then((response)=> {
       setProducts(response)
     }).catch((e) => setError(e))
+    .finally(() => isLoading(false))
   }, [])
 
 
