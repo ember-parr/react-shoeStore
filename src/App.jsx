@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
-import { getProducts } from "./services/productService"
-import Spinner from "./Spinner"
+import Spinner from "./Spinner";
+import useFetch from "./services/useFetch";
 
 export default function App() {
   const [size, setSize] = useState("")
   
+  // aliasing data as products because products is variable expected below in return
+  const { data: products, loading, error } = useFetch("products?category=shoes")
   
   // no longer need, custom hook placed in useFetch.js
   // useEffect(() => {  
