@@ -7,13 +7,14 @@ import { getProducts } from "./services/productService"
 export default function App() {
   const [size, setSize] = useState("")
   const [products, setProducts] = useState([])
+  const [error, setError] = useState(null)
   
 
   useEffect(() => {
     getProducts("shoes")
     .then((response)=> {
       setProducts(response)
-    })
+    }).catch((e) => setError(e))
   }, [])
 
 
@@ -31,6 +32,8 @@ export default function App() {
 
   const filteredProducts = size ? products.filter(product => product.skus.find((shoe) => shoe.size === parseInt(size)) ) : products;
 
+  if (error) throw error;
+  
   return (
     <>
       <div className="content">
