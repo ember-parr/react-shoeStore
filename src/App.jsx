@@ -7,7 +7,7 @@ import {Route, Routes } from 'react-router-dom';
 import Details from "./Detail";
 import Cart from "./Cart";
 
-
+ 
 export default function App() {
   
   return (
@@ -15,7 +15,11 @@ export default function App() {
       <div className="content">
         <Header />
         <main>
-          <Products />
+          <Routes>
+            <Route path="/" element={<Products />} />
+            <Route path="/detail" element={<Details />} />
+            <Route path="/cart" element={<Cart />} />
+          </Routes>
         </main>
       </div>
       <Footer />
