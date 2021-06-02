@@ -7,18 +7,16 @@ import Spinner from "./Spinner"
 
 export default function App() {
   const [size, setSize] = useState("")
-  const [products, setProducts] = useState([])
-  const [error, setError] = useState(null)
-  const [loading, isLoading] = useState(true)
   
-
-  useEffect(() => {
-    getProducts("shoes")
-    .then((response)=> {
-      setProducts(response)
-    }).catch((e) => setError(e))
-    .finally(() => isLoading(false))
-  }, [])
+  
+  // no longer need, custom hook placed in useFetch.js
+  // useEffect(() => {  
+  //   getProducts("shoes")
+  //   .then((response)=> {
+  //     setProducts(response)
+  //   }).catch((e) => setError(e))
+  //   .finally(() => isLoading(false))
+  // }, [])
 
 
   function renderProduct(p) {
