@@ -3,6 +3,7 @@ import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
 import { getProducts } from "./services/productService"
+import Spinner from "./Spinner"
 
 export default function App() {
   const [size, setSize] = useState("")
@@ -35,7 +36,8 @@ export default function App() {
   const filteredProducts = size ? products.filter(product => product.skus.find((shoe) => shoe.size === parseInt(size)) ) : products;
 
   if (error) throw error;
-  
+  if (loading) return <Spinner />
+
   return (
     <>
       <div className="content">
